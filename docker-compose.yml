@@ -1,0 +1,52 @@
+version: "3"
+services:
+  # mongodb:
+  #   image: "mongo"
+  #   restart: "always"
+  #   ports:
+  #     - "27017:27017"
+  #   volumes:
+  #     - ./data/db:/data/db
+  auth-server:
+    build:
+      context: .
+      dockerfile: Dockerfile # replace this with Dockerfile for production
+    container_name: auth-server
+    volumes:
+      - ./data/server:/home/node/auth-server/data
+    ports:
+      - "8058:8058"
+    links:
+      - redis
+    depends_on:
+      - redis
+      # - mongodb
+    environment:
+      - REDIS_URL=redis://cache
+      # - DEV_DATABASE_URI=${DATABASE_URI}
+  redis:
+    image: redis
+    container_name: cache
+    command:
+      - '--appendonly yes'
+    restart: always
+    ports:
+      - "6379:6379"
+    volumes:
+      - ./data/redis-data:/data
+    environment:
+      - REDIS_APPENDONLY=yes
+      - REDIS_APPENDFSYNC=always
+  # mongo-express:
+  #   image: "mongo-express"
+  #   restart: "always"
+  #   ports: 
+  #     - "8081:8081"
+  #   environment: 
+  #     ME_CONFIG_MONGODB_SERVER: "mongodb"
+  #   depends_on: 
+  #     - "mongodb"
+# volumes: 
+#   data/db:
+#   data/server:
+#   data/redis-data:

@@ -1,0 +1,26 @@
+@token = eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJlbWFpbCI6Im1lZWt5QG92aS5jb20iLCJhZ2UiOjIwLCJpYXQiOjE2MzEzMTY3MzIsImV4cCI6MTYzMTMxNzMzNn0.h0mV_MaOeeeqfzegcsasD1UYufoT_yzL1fOzw-waB9c
+###
+GET http://localhost:8058/ HTTP/1.1
+Content-Type: application/json
+
+###
+POST http://localhost:8058/store/me?email=meeky@ovi.com&age=20 HTTP/1.1
+Content-Type: application/json
+
+###
+GET http://localhost:8058/me
+Content-Type: application/json
+
+###
+POST http://localhost:8058/api/v1/login HTTP/1.1
+Content-Type: application/json
+
+{
+  "email": "meeky@ovi.com",
+  "age": 20
+}
+
+###
+GET  http://localhost:8058/api/v1/dashboard HTTP/1.1
+Content-Type: application/json
+Authorization: Bearer {{ token }}
